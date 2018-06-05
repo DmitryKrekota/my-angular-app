@@ -1,8 +1,10 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
+import {NavbarComponent} from './navbar/navbar.component';
 
 @NgModule({
-    declarations: [],
+    declarations: [NavbarComponent],
+    exports: [NavbarComponent],
     imports: [BrowserModule],
     providers: [],
     bootstrap: []

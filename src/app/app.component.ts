@@ -7,11 +7,10 @@ import {Router, NavigationStart} from '@angular/router';
     template: '<router-outlet></router-outlet>'
 })
 export class AppComponent {
-
-    onRouterEvent(event) {
+    async onRouterEvent(event) {
         if (event instanceof NavigationStart) {
+            let isAuthorized = await this.authService.isAuthenticated();
             let loginUrl = '/login';
-            let isAuthorized = this.authService.isAuthorized();
             let isLoginUrl = event.url === loginUrl;
             if (!isLoginUrl && !isAuthorized) {
                 this.router.navigate([loginUrl]);

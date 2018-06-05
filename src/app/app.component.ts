@@ -9,13 +9,13 @@ import { AuthService } from './common/auth/auth.service';
 export class AppComponent {
     async onRouterEvent(event) {
         if (event instanceof NavigationStart) {
-            let isAuthorized = await this.authService.isAuthenticated();
+            let user = await this.authService.getAuthenticatedUser();
             let loginUrl = '/login';
             let isLoginUrl = event.url === loginUrl;
-            if (!isLoginUrl && !isAuthorized) {
+            if (!isLoginUrl && !user) {
                 this.router.navigate([loginUrl]);
             }
-            if (isLoginUrl && isAuthorized) {
+            if (isLoginUrl && user) {
                 this.router.navigate(['/']);
             }
         }

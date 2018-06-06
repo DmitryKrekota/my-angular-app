@@ -17,3 +17,7 @@ To create a production build run: `npm run build-prod` and you will find a build
 Lint files: `npm run lint`.
 
 ---
+
+Login credentials:
+username: user
+password: 111111

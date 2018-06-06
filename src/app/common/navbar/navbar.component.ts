@@ -10,8 +10,7 @@ import {Router} from '@angular/router';
 export class NavbarComponent {
     constructor(private authService: AuthService, private router: Router) {}
 
-    logout($event) {
-        $event.preventDefault();
+    logout() {
         this.authService.logout().subscribe(() => {
             this.router.navigate(['/login']);
         });

@@ -10,3 +10,7 @@ body {
 .app-app-root {
     width: 100%;
 }
+
+[appdragelement] {
+    cursor: move;
+}

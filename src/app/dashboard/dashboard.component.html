@@ -3,8 +3,8 @@
     <div class="row">
         <div class="col">
             <h1 class="h3 mb-3 font-weight-normal text-center">Welcome to my angular app!</h1>
-            <img [src]="domSanitizer.bypassSecurityTrustUrl(user.image)" class="app-user-image">
-            <span class="app-user-name">{{user.username}}</span>
+            <img [src]="domSanitizer.bypassSecurityTrustUrl(user.image)" class="app-user-image" appDragElement>
+            <span class="app-user-name" appDragElement>{{user.username}}</span>
         </div>
     </div>
 </div>

@@ -13,20 +13,20 @@ export class DragElementDirective {
     element: HTMLElement;
     entity: string;
 
-    onElementInitPositions(item) {
-        if (item[this.entity]) {
-            this.element.style.top = item[this.entity].top;
-            this.element.style.left = item[this.entity].left;
-            this.element.style.position = 'fixed';
-        }
-    }
-
     constructor(private elementRef: ElementRef, private dragElementService: DragElementService) {
         this.onDocumentMouseMove = this.onDocumentMouseMove.bind(this);
         this.onDocumentMouseUp = this.onDocumentMouseUp.bind(this);
         this.element = this.elementRef.nativeElement;
         this.entity = this.element.getAttribute('appDragElement');
         this.dragElementService.elementInitPositions$.subscribe(this.onElementInitPositions.bind(this));
+    }
+
+    onElementInitPositions(item) {
+        if (item[this.entity]) {
+            this.element.style.top = item[this.entity].top;
+            this.element.style.left = item[this.entity].left;
+            this.element.style.position = 'fixed';
+        }
     }
 
     onDocumentMouseMove($event) {

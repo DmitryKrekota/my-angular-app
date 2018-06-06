@@ -1,12 +1,16 @@
 import {Component} from '@angular/core';
 import {Router, NavigationStart} from '@angular/router';
-import { AuthService } from './common/auth/auth.service';
+import {AuthService} from './common/auth/auth.service';
 
 @Component({
     selector: 'app-root',
     template: '<router-outlet></router-outlet>'
 })
 export class AppComponent {
+    constructor(private authService: AuthService, private router: Router) {
+        router.events.subscribe(this.onRouterEvent.bind(this));
+    }
+
     async onRouterEvent(event) {
         if (event instanceof NavigationStart) {
             let user = await this.authService.getAuthenticatedUser();
@@ -19,9 +23,5 @@ export class AppComponent {
                 this.router.navigate(['/']);
             }
         }
-    }
-
-    constructor(private authService: AuthService, private router: Router) {
-        router.events.subscribe(this.onRouterEvent.bind(this));
     }
 }

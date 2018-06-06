@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../common/auth/auth.service';
 import {DomSanitizer} from '@angular/platform-browser';
 import {DragElementService} from '../common/drag-element/drag-element.service';
@@ -8,7 +8,7 @@ import {DragElementService} from '../common/drag-element/drag-element.service';
     templateUrl: './dashboard.component.html',
     styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
     user;
     savedPositions;
 
@@ -16,27 +16,35 @@ export class DashboardComponent {
         private authService: AuthService,
         private domSanitizer: DomSanitizer,
         private dragElementService: DragElementService
-    ) {
-        this.obtainUser().then(() => {
-            let localStorageItem = localStorage.getItem('savedPositions');
-            if (localStorageItem) {
-                this.savedPositions = JSON.parse(localStorageItem);
-                if (this.savedPositions[this.user.username]) {
-                    Object.keys(this.savedPositions[this.user.username]).forEach((key, index) => {
-                        this.dragElementService.elementInitPositions$.emit({
-                            [key]: this.savedPositions[this.user.username][key]
-                        });
-                    });
-                }
-            } else {
-                this.savedPositions = {};
-            }
-        });
+    ) {}
+
+    ngOnInit() {
+        this.obtainUser().subscribe(this.onObtainUser.bind(this));
         this.dragElementService.elementDragged$.subscribe(this.onElementDragged.bind(this));
     }
 
-    async obtainUser() {
-        return (this.user = await this.authService.getAuthenticatedUser());
+    onObtainUser() {
+        let localStorageItem = localStorage.getItem('savedPositions');
+        if (localStorageItem) {
+            this.savedPositions = JSON.parse(localStorageItem);
+            if (this.savedPositions[this.user.username]) {
+                Object.keys(this.savedPositions[this.user.username]).forEach((key) => {
+                    this.dragElementService.elementInitPositions$.emit({
+                        [key]: this.savedPositions[this.user.username][key]
+                    });
+                });
+            }
+        } else {
+            this.savedPositions = {};
+        }
+    }
+
+    obtainUser() {
+        let userObserver = this.authService.getAuthenticatedUser();
+        userObserver.subscribe((user) => {
+            this.user = user;
+        });
+        return userObserver;
     }
 
     onElementDragged(item) {

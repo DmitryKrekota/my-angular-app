@@ -13,12 +13,11 @@ export class LoginComponent {
 
     constructor(private authService: AuthService, private router: Router) {}
 
-    async login() {
-        try {
-            await this.authService.login(this.username, this.password);
+    login() {
+        this.authService.login(this.username, this.password).subscribe(() => {
             this.router.navigate(['/']);
-        } catch {
-            alert('Incorrect credentials. Try again.');
-        }
+        }, (error) => {
+            alert(error);
+        })
     }
 }

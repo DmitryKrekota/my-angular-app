@@ -11,17 +11,18 @@ export class AppComponent {
         router.events.subscribe(this.onRouterEvent.bind(this));
     }
 
-    async onRouterEvent(event) {
+    onRouterEvent(event) {
         if (event instanceof NavigationStart) {
-            let user = await this.authService.getAuthenticatedUser();
-            let loginUrl = '/login';
-            let isLoginUrl = event.url === loginUrl;
-            if (!isLoginUrl && !user) {
-                this.router.navigate([loginUrl]);
-            }
-            if (isLoginUrl && user) {
-                this.router.navigate(['/']);
-            }
+            this.authService.getAuthenticatedUser().subscribe((user) => {
+                let loginUrl = '/login';
+                let isLoginUrl = event.url === loginUrl;
+                if (!isLoginUrl && !user) {
+                    this.router.navigate([loginUrl]);
+                }
+                if (isLoginUrl && user) {
+                    this.router.navigate(['/']);
+                }
+            });
         }
     }
 }

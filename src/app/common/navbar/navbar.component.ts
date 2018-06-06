@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
-import { AuthService } from '../auth/auth.service';
-import { Router } from '@angular/router';
+import {AuthService} from '../auth/auth.service';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-navbar',
@@ -8,17 +8,12 @@ import { Router } from '@angular/router';
     styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
-
     constructor(private authService: AuthService, private router: Router) {}
 
-    async logout($event) {
+    logout($event) {
         $event.preventDefault();
-        try {
-            await this.authService.logout();
+        this.authService.logout().subscribe(() => {
             this.router.navigate(['/login']);
-        } catch {
-            alert('Incorrect credentials. Try again.');
-        }
+        });
     }
-
 }

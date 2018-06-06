@@ -22,7 +22,7 @@ class AuthService {
                 return user.username === username && user.password === password;
             });
             if (loginUser) {
-                window.localStorage.setItem('authenticatedUsername', loginUser.username);
+                localStorage.setItem('authenticatedUsername', loginUser.username);
                 resolve();
             } else {
                 reject();
@@ -32,14 +32,14 @@ class AuthService {
 
     logout() {
         return new Promise((resolve, reject) => {
-            window.localStorage.removeItem('authenticatedUsername');
+            localStorage.removeItem('authenticatedUsername');
             resolve();
         });
     }
 
     getAuthenticatedUser() {
         return new Promise((resolve) => {
-            let authenticatedUsername = window.localStorage.getItem('authenticatedUsername');
+            let authenticatedUsername = localStorage.getItem('authenticatedUsername');
             resolve(
                 this.users.find((user) => {
                     return user.username === authenticatedUsername;

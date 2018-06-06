@@ -1,4 +1,5 @@
 import {Directive, HostListener, ElementRef} from '@angular/core';
+import {DragElementService} from './drag-element.service';
 
 @Directive({
     selector: '[appDragElement]'
@@ -9,23 +10,42 @@ export class DragElementDirective {
     initialElementX: number;
     initialElementY: number;
     body: HTMLElement;
+    element: HTMLElement;
+    entity: string;
 
-    constructor(private elementRef: ElementRef) {
+    onElementInitPositions(item) {
+        if (item[this.entity]) {
+            this.element.style.top = item[this.entity].top;
+            this.element.style.left = item[this.entity].left;
+            this.element.style.position = 'fixed';
+        }
+    }
+
+    constructor(private elementRef: ElementRef, private dragElementService: DragElementService) {
         this.onDocumentMouseMove = this.onDocumentMouseMove.bind(this);
         this.onDocumentMouseUp = this.onDocumentMouseUp.bind(this);
+        this.element = this.elementRef.nativeElement;
+        this.entity = this.element.getAttribute('appDragElement');
+        this.dragElementService.elementInitPositions$.subscribe(this.onElementInitPositions.bind(this));
     }
 
     onDocumentMouseMove($event) {
         $event.preventDefault();
-        this.elementRef.nativeElement.style.top = (this.initialElementY + ($event.pageY - this.initialPageY)) + 'px';
-        this.elementRef.nativeElement.style.left = (this.initialElementX + ($event.pageX - this.initialPageX)) + 'px';
-        this.elementRef.nativeElement.style.position = 'fixed';
+        this.element.style.top = this.initialElementY + ($event.pageY - this.initialPageY) + 'px';
+        this.element.style.left = this.initialElementX + ($event.pageX - this.initialPageX) + 'px';
+        this.element.style.position = 'fixed';
     }
 
     onDocumentMouseUp($event) {
         $event.preventDefault();
         document.removeEventListener('mousemove', this.onDocumentMouseMove);
         document.removeEventListener('mouseup', this.onDocumentMouseUp);
+        this.dragElementService.elementDragged$.emit({
+            [this.entity]: {
+                top: this.element.style.top,
+                left: this.element.style.left
+            }
+        });
     }
 
     @HostListener('mousedown', ['$event'])
@@ -33,9 +53,9 @@ export class DragElementDirective {
         $event.preventDefault();
         this.initialPageX = $event.pageX;
         this.initialPageY = $event.pageY;
-        let elementRect = this.elementRef.nativeElement.getBoundingClientRect();
-        this.initialElementX = elementRect.x;
-        this.initialElementY = elementRect.y;
+        let elementRect = this.element.getBoundingClientRect();
+        this.initialElementX = elementRect.left;
+        this.initialElementY = elementRect.top;
         document.addEventListener('mousemove', this.onDocumentMouseMove);
         document.addEventListener('mouseup', this.onDocumentMouseUp);
     }

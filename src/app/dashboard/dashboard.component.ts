@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthService} from '../common/auth/auth.service';
 import {DomSanitizer} from '@angular/platform-browser';
-import {DragElementService} from '../common/drag-element/drag-element.service';
+import {AuthService} from '../shared/services/auth.service';
+import {DragElementService} from '../shared/services/drag-element.service';
 
 @Component({
     selector: 'app-dashboard',

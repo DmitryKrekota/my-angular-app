@@ -1,5 +1,5 @@
 import {Directive, HostListener, ElementRef} from '@angular/core';
-import {DragElementService} from './drag-element.service';
+import {DragElementService} from '../services/drag-element.service';
 
 @Directive({
     selector: '[appDragElement]'

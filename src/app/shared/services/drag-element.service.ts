@@ -1,8 +1,6 @@
 import {Injectable, EventEmitter} from '@angular/core';
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class DragElementService {
     public elementDragged$: EventEmitter<any>;
     public elementInitPositions$: EventEmitter<any>;
@@ -11,5 +9,4 @@ export class DragElementService {
         this.elementDragged$ = new EventEmitter();
         this.elementInitPositions$ = new EventEmitter();
     }
-
 }

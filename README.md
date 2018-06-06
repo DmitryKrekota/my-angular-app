@@ -18,8 +18,13 @@ Lint files: `npm run lint`.
 
 ---
 
-Login credentials for https://dmitrykrekota.github.io/my-angular-app/dist/my-angular-app/#/ :
+Login credentials for https://dmitrykrekota.github.io/my-angular-app/dist/#/ :
 ```
 username: root
 password: 111111
+```
+or
+```
+username: admin
+password: 222222
 ```

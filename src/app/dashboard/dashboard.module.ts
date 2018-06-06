@@ -1,13 +1,12 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {DashboardComponent} from './dashboard.component';
-import {CommonModule} from '@angular/common';
-import {NavbarComponent} from '../common/navbar/navbar.component';
-import {DragElementDirective} from '../common/drag-element/drag-element.directive';
+import {NavbarModule} from '../navbar/navbar.module';
+import {SharedModule} from '../shared/shared.module';
 
 @NgModule({
-    declarations: [DashboardComponent, NavbarComponent, DragElementDirective],
-    imports: [BrowserModule],
+    declarations: [DashboardComponent],
+    imports: [BrowserModule, NavbarModule, SharedModule],
     providers: [],
     bootstrap: []
 })

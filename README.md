@@ -19,5 +19,7 @@ Lint files: `npm run lint`.
 ---
 
 Login credentials:
+```
 username: user
 password: 111111
+```
